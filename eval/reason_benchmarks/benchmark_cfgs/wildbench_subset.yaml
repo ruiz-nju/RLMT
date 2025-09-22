@@ -1,0 +1,6 @@
+benchmark: "lsat_ar,zebra_logic,musr_object_placements,countdown,trip_planning"
+test_sample_size: 200
+model: gpt-4o-mini-2024-07-18
+temperature: 0.0
+max_tokens: "4096,8192,4096,8192,16384"
+max_model_len: 32768
