@@ -1,4 +1,4 @@
-# Thinking Language Models 
+# Language Models That Think, Chat Better
 
 This github repository contains the code for the arXiv preprint [Language Models That Think, Chat Better](http://arxiv.org/abs/2509.20357) by Adithya Bhaskar*, Xi Ye*, and Danqi Chen.
 This code includes benchmarking code for evaluating local and API-based language models on several benchmarks, and SFT, DPO, PPO, and GRPO code for training language models with thinking (i.e., RLMT as introduced in the paper) and without (normal RLHF).
