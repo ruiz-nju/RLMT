@@ -38,7 +38,7 @@ If you run into any issues, please email us at `adithyab@princeton.edu` or `xi.y
 ## Citation
 If this work or repository was helpful in your work, please cite as:
 ```
-@misc{bhaskar2025languagemodelsthinkchat,
+@misc{bhaskar2025language,
     title={Language Models that Think, Chat Better}, 
     author={Adithya Bhaskar and Xi Ye and Danqi Chen},
     year={2025},
