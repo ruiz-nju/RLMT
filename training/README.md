@@ -28,6 +28,7 @@ For the most part, the code is the same as the verl code in the above link, with
 - We implement a new Reward Model Worker, the `SequenceRewardModelWorker` in  `ppo_grpo/verl/workers/fsdp_workers.py`. This worker strips thinking traces out based on the longCoT config before scoring with a reward model.
 - We allow a `strict` option that treats the response as `null` if the thinking portion is not correctly formatted as per the passed longCoT config. We only use this option for our instruct models as the results for other models seem unaffected by this option.
 - We provide data preparation utilities inside `ppo_grpo/scripts/data` to prepare the datasets for training (which will be placed inside `ppo_grpo/data` by default).
+- For an explanation of the various hyperparamaters and options, refer to `ppo_grpo/configs/grpo__llamabase__warm-start__think.yaml`'s comments.
 
 Please refer to further documentation provided by verl for details about what the various hyperparameters mean and how to set them.
 We provide several configuration files for GRPO in `ppo_grpo/configs/` and corresponding run scripts in `ppo_grpo/scripts/train` to launch them.
