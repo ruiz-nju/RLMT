@@ -36,4 +36,12 @@ We release all model checkpoints evaluated in the paper (main experiments only) 
 If you run into any issues, please email us at `adithyab@princeton.edu` or `xi.ye@princeton.edu`. You can also open a GitHub issue in this repository.
 
 ## Citation
-Coming soon!
+If this work or repository was helpful in your work, please cite as:
+```
+@misc{bhaskar2025languagemodelsthinkchat,
+    title={Language Models that Think, Chat Better}, 
+    author={Adithya Bhaskar and Xi Ye and Danqi Chen},
+    year={2025},
+    journal={arXiv preprint arXiv:2509.20357},
+}
+```
