@@ -1,7 +1,20 @@
 # Language Models That Think, Chat Better
 
-This github repository contains the code for the arXiv preprint [Language Models That Think, Chat Better](http://arxiv.org/abs/2509.20357) by Adithya Bhaskar*, Xi Ye*, and Danqi Chen.
+<p align="center">
+    📖 <a href="https://arxiv.org/pdf/2509.20357" >Arxiv</a> • 🤗 <a href="https://huggingface.co/collections/princeton-nlp/rlmt-experiments-68d0e7704d0c8fa49a9c1e3d" >Huggingface</a>
+</p>
+
+Code and data for [Language Models That Think, Chat Better](http://arxiv.org/abs/2509.20357)
+
+
 This code includes benchmarking code for evaluating local and API-based language models on several benchmarks, and SFT, DPO, PPO, and GRPO code for training language models with thinking (i.e., RLMT as introduced in the paper) and without (normal RLHF).
+
+<p align="center">
+  <img width="90%" alt="image" src="assets/rlmt.png">
+</p>
+
+Authors: [Adithya Bhaskar*](https://adithyabh.github.io/), [Xi Ye*](https://xiye17.github.io/), and [Danqi Chen](https://www.cs.princeton.edu/~danqic/).
+
 
 ## Setup
 Please find the necessary dependencies inside `requirements.txt`. We recommend installing [PyTorch](https://pytorch.org/) first when creating your environment, followed by the other dependencies.
