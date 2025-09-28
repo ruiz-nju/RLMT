@@ -10,7 +10,7 @@ from transformers import AutoModelForSequenceClassification, AutoTokenizer
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        description="Score responses with a reward model. Supports response-only and longcot (thinking + answer) formats."
+        description="Score responses with a reward model. Supports response-only and longcot formats. For longcot, only the final answer is scored, never the thinking content."
     )
 
     # IO
@@ -36,10 +36,6 @@ def parse_args():
                         help="Key inside response dicts for the thinking content in longcot datasets.")
     parser.add_argument("--mode", type=str, default="auto", choices=["auto", "response_only", "longcot"],
                         help="How to format assistant content. 'auto' detects presence of thinking.")
-    parser.add_argument("--include_thinking", action="store_true",
-                        help="If set and longcot content is available, include thinking before the final answer.")
-    parser.add_argument("--thinking_separator", type=str, default="\n",
-                        help="Separator between thinking and answer when included.")
 
     # Inference
     parser.add_argument("--batch_size", "-bs", type=int, default=16,
@@ -81,11 +77,9 @@ def _get_torch_dtype(dtype_str: str):
 def _extract_assistant_text(
     response_item: Any,
     mode: str,
-    include_thinking: bool,
     response_key: str,
     answer_key: str,
     thought_key: str,
-    thinking_separator: str,
 ) -> str:
     # String responses
     if isinstance(response_item, str):
@@ -101,10 +95,8 @@ def _extract_assistant_text(
     )
 
     if is_longcot:
+        # Always return only the final answer/response, never the thinking
         final_text = response_item.get(answer_key) or response_item.get(response_key)
-        thought = response_item.get(thought_key, None)
-        if include_thinking and thought:
-            return f"{thought}{thinking_separator}{final_text}" if final_text is not None else str(thought)
         return str(final_text) if final_text is not None else ""
 
     # response-only
@@ -172,11 +164,9 @@ def main():
                 assistant_text = _extract_assistant_text(
                     response_item=response_item,
                     mode=args.mode,
-                    include_thinking=args.include_thinking,
                     response_key=args.response_key,
                     answer_key=args.answer_key,
                     thought_key=args.thought_key,
-                    thinking_separator=args.thinking_separator,
                 )
                 chat = [
                     {"role": "user", "content": prompt},
