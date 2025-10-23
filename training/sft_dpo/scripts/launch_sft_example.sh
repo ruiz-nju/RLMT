@@ -8,18 +8,18 @@
 #SBATCH --cpus-per-task=1
 
 # >>> Set your conda environment here
-source /path/to/conda/profile.d/conda.sh
-conda activate <your-env>
+source /root/miniconda3/etc/profile.d/conda.sh
+conda activate rlmt
 
-mode="llama" # "llama" or "qwen"
+mode="qwen" # "llama" or "qwen"
 
 if [ "${mode}" == "qwen" ]; then
-    base_model="models/Qwen2.5-7B" # >>> Replace with your Qwen model path
-    base_tokenizer="models/Qwen2.5-7B"
+    base_model="Qwen/Qwen2.5-7B" # >>> Replace with your Qwen model path
+    base_tokenizer="Qwen/Qwen2.5-7B"
     lr=4e-6 
     warmup_ratio=0.1 
     gradient_accumulation_steps=1
-    train_path="/path/to/your/sft/dataset" # >>> Replace with your training dataset path
+    train_path="/home/bml_job/custom_workspace/job-gguryn8pkf7k/zhurui/RLMT/data/sft_dataset" # >>> Replace with your training dataset path
     epochs=2
 else
     base_model="models/Llama-3.1-8B" # >>> Replace with your Llama model path
@@ -27,26 +27,43 @@ else
     lr=4e-6
     warmup_ratio=0.1 
     gradient_accumulation_steps=2 
-    train_path="/path/to/your/sft/dataset" # >>> Replace with your training dataset path
+    train_path="/home/bml_job/custom_workspace/job-gguryn8pkf7k/zhurui/RLMT/data/sft_dataset" # >>> Replace with your training dataset path
     epochs=2
 fi
 
 micro_batch_size=1
 max_steps=-1
-gpu_count=$(nvidia-smi -L | wc -l)
 push_to_hub=false
 max_length=20000
 
 model_basename=$(basename ${base_model})
-data_basename="example_dataset" # >>> Replace with your dataset name
+data_basename="gemini_2.5_flash_0417_sft-data" # >>> Replace with your dataset name
 out_path="checkpoints/sft__m_${model_basename}__d_${data_basename}"
 weight_decay=1e-4 
 
 # --add_longcot_config: only set if the dataset is longcot!!!
 extra="--use_liger=True --use_load_from_disk=True --add_longcot_config" 
 
-WANDB_MODE=offline torchrun --nproc-per-node ${gpu_count} --master_port 12345 \
-    ../src/sft.py \
+echo "当前可见 GPU 编号：$CUDA_VISIBLE_DEVICES"
+
+# 动态计算 CUDA_VISIBLE_DEVICES 中指定的 GPU 数量
+if [ -n "$CUDA_VISIBLE_DEVICES" ]; then
+    # 分割逗号，统计数组长度（处理可能的空格）
+    IFS=',' read -ra GPU_IDS <<< "${CUDA_VISIBLE_DEVICES// /}"
+    gpu_count=${#GPU_IDS[@]}
+else
+    # 未设置 CUDA_VISIBLE_DEVICES 时，使用所有物理 GPU
+    gpu_count=$(nvidia-smi -L | wc -l)
+fi
+
+echo "使用的 GPU 数量：$gpu_count"
+
+
+# 打印 GPU 详情
+nvidia-smi --query-gpu=index,name,memory.total --format=csv,noheader,nounits
+
+WANDB_MODE=online torchrun --nproc-per-node ${gpu_count} --master_port 12345 \
+    src/sft.py \
     --block_size=${max_length} \
     --per_device_train_batch_size=${micro_batch_size} \
     --per_device_eval_batch_size=${micro_batch_size} \

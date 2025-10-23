@@ -6,14 +6,14 @@
 # >>> Set the input sampled responses path
 # - If it ends with .json, it will be loaded as JSON
 # - Otherwise, it will be treated as a HuggingFace dataset directory (load_from_disk)
-INPUT_PATH="/path/to/sampled_responses.json"
+INPUT_PATH="/home/bml_job/custom_workspace/job-gguryn8pkf7k/zhurui/RLMT/data/gemini_2.5_flash_0417_sft-data.json"
 
 # >>> Set the output directory for the resulting dataset
 # - If MODEL_FAMILY=both, subfolders llama/ and qwen/ will be created under this directory
-OUTPUT_DIR="/path/to/output_sft_dataset"
+OUTPUT_DIR="/home/bml_job/custom_workspace/job-gguryn8pkf7k/zhurui/RLMT/data/sft_dataset"
 
 # >>> Choose model family: llama | qwen | both
-MODEL_FAMILY="llama"
+MODEL_FAMILY="qwen"
 
 # >>> Thinking mode: set to true for <think> ... </think> + <response> ... </response>; false for baseline
 THINKING="true"

@@ -45,7 +45,9 @@ def has_forbidden_tags(text: str) -> bool:
     return False
 
 
-def construct_messages(prompt: str, response: str, thought: str, thinking: bool) -> List[Dict[str, str]]:
+def construct_messages(
+    prompt: str, response: str, thought: str, thinking: bool
+) -> List[Dict[str, str]]:
     if thinking:
         assistant_content = f"<think>\n{thought}\n</think>\n\n{response}"
     else:
@@ -56,7 +58,9 @@ def construct_messages(prompt: str, response: str, thought: str, thinking: bool)
     ]
 
 
-def build_examples(entries: List[Dict[str, Any]], thinking: bool) -> List[Dict[str, Any]]:
+def build_examples(
+    entries: List[Dict[str, Any]], thinking: bool
+) -> List[Dict[str, Any]]:
     examples: List[Dict[str, Any]] = []
     ids_seen = set()
     for e in tqdm(entries):
@@ -122,7 +126,9 @@ def tokenize_and_build(
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Build SFT dataset from sampled responses (Gemini or OpenAI)")
+    parser = argparse.ArgumentParser(
+        description="Build SFT dataset from sampled responses (Gemini or OpenAI)"
+    )
     parser.add_argument(
         "--input",
         required=True,
@@ -151,7 +157,7 @@ def main():
     )
     parser.add_argument(
         "--qwen_tokenizer_path",
-        default="models/Qwen2.5-7B-Instruct",
+        default="Qwen/Qwen2.5-7B-Instruct",
         help="Path to Qwen tokenizer/model for chat template",
     )
     args = parser.parse_args()
@@ -189,5 +195,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
